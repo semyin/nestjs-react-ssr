@@ -10,16 +10,19 @@ import { dirname } from 'path';
 // 在 ES Modules 中获取 __dirname 的替代方案
   const __filename = fileURLToPath(import.meta.url);
   const __dirname = dirname(__filename);
+	console.log('__dirname', __dirname);
+	
 
 bootstrap();
 
 async function bootstrap() {
 	const app = await NestFactory.create<NestExpressApplication>(AppModule);
 	
+	// 设置静态文件目录
+  app.useStaticAssets(join(__dirname, '..', 'client'));
+
 	await app.init();
 
-	// 设置静态文件目录
-  app.useStaticAssets(join(__dirname, '..', 'dist', 'client'));
 	resolveHandler(await app.getHttpAdapter().getInstance());
 }
 
