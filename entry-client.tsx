@@ -5,7 +5,7 @@ import App from './App';
 
 ReactDOM.hydrateRoot(
   document.getElementById('root')!,
-  <BrowserRouter basename="/views">
+  <BrowserRouter basename="/views/">
     <App />
   </BrowserRouter>
 );
