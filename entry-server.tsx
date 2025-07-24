@@ -1,13 +1,15 @@
 import React from 'react';
-// import { StaticRouter } from 'react-router-dom';
+import { StaticRouter } from 'react-router';
 import App from './App';
 import { renderToString } from "react-dom/server";
 
 export function render(url: string) {
+  console.log(url);
+  
   const html = renderToString(
-    // <StaticRouter location={url}>
+    <StaticRouter basename="/views" location={url}>
       <App />
-    // </StaticRouter>
+    </StaticRouter>
   );
   return {
     html,
