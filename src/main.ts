@@ -7,7 +7,7 @@ import { join } from 'path';
 import { fileURLToPath } from 'url';
 import { dirname } from 'path';
 
-// 在 ES Modules 中获取 __dirname 的替代方案
+// Alternative to getting __dirname in ES Modules
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 	
@@ -16,7 +16,7 @@ bootstrap();
 async function bootstrap() {
 	const app = await NestFactory.create<NestExpressApplication>(AppModule);
 	
-	// 设置静态文件目录
+	// Set static file directory
   app.useStaticAssets(join(__dirname, '..', 'client/assets'), {
 		prefix: '/assets/'
 	});

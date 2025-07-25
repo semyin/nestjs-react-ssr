@@ -2,10 +2,13 @@ import { defineConfig } from "vite";
 import { vavite } from "vavite";
 import { swc } from "rollup-plugin-swc3";
 import react from '@vitejs/plugin-react'
-// import react from '@vitejs/plugin-react-swc'
 
 export default defineConfig({
-	// base: '/views',
+	resolve: {
+		alias: {
+			'@': __dirname,
+		},
+	},
 	buildSteps: [
 		{
 			name: "client",

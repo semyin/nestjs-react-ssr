@@ -3,13 +3,12 @@ import { readFile } from 'fs/promises';
 import viteDevServer from 'vavite/vite-dev-server';
 
 async function reactSsrMiddleware(req: Request, res: Response, next: NextFunction) {
-  // 如果是 API 请求，跳过 SSR 处理
+  // if API request, skip SSR
   if (req.url.startsWith('/api')) {
     return next();
   }
   
   const url = req.originalUrl;
-  console.log('reactSsrMiddleware', req.originalUrl);
   
   let html: string;
   let template: string;
