@@ -8,11 +8,9 @@ import { fileURLToPath } from 'url';
 import { dirname } from 'path';
 
 // 在 ES Modules 中获取 __dirname 的替代方案
-  const __filename = fileURLToPath(import.meta.url);
-  const __dirname = dirname(__filename);
-	console.log('__dirname', __dirname);
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 	
-
 bootstrap();
 
 async function bootstrap() {

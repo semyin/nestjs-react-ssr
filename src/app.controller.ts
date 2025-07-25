@@ -4,6 +4,7 @@ import { readFile } from 'fs/promises';
 
 @Controller()
 export class AppController {
+	
 	@Get("/views/*")
 	async home(@Req() request: Request) {
 		const url = request.url
