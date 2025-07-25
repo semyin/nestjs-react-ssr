@@ -1,5 +1,6 @@
 import { NestFactory } from "@nestjs/core";
 import type { Express } from "express";
+import express from 'express';
 import { IncomingMessage, ServerResponse } from "node:http";
 import { AppModule } from "./app.module";
 import { NestExpressApplication } from '@nestjs/platform-express';
@@ -20,6 +21,9 @@ async function bootstrap() {
   app.useStaticAssets(join(__dirname, '..', 'client/assets'), {
 		prefix: '/assets/'
 	});
+
+	// Set vite.svg as static file
+  app.use('/vite.svg', express.static(join(__dirname, '..', 'client/vite.svg')));
 
 	await app.init();
 
