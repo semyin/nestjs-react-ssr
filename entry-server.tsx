@@ -7,7 +7,7 @@ export function render(url: string) {
   console.log(url);
   
   const html = renderToString(
-    <StaticRouter basename="/views/" location={url}>
+    <StaticRouter location={url}>
       <App />
     </StaticRouter>
   );

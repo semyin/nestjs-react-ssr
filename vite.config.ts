@@ -11,7 +11,7 @@ export default defineConfig({
 			name: "client",
 			config: {
 				build: {
-					outDir: "dist/views/client",
+					outDir: "dist/client",
 					manifest: true,
 					// rollupOptions: { input: "entry-client.tsx" },
 				},

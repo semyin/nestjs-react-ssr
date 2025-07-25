@@ -17,7 +17,9 @@ async function bootstrap() {
 	const app = await NestFactory.create<NestExpressApplication>(AppModule);
 	
 	// 设置静态文件目录
-  app.useStaticAssets(join(__dirname, '..', 'views/client'));
+  app.useStaticAssets(join(__dirname, '..', 'client/assets'), {
+		prefix: '/assets/'
+	});
 
 	await app.init();
 
