@@ -10,6 +10,10 @@
 		"customConditions": ["import"],
 		"experimentalDecorators": true,
 		"types": ["vite/client"],
-		"jsx": "react-jsx"
+		"jsx": "react-jsx",
+		"baseUrl": ".",
+		"paths": {
+      "@/*": ["./*"]
+    }
 	}
 }
