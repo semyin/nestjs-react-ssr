@@ -2,6 +2,14 @@ import { Request, Response, NextFunction } from 'express';
 import { readFile } from 'fs/promises';
 import viteDevServer from 'vavite/vite-dev-server';
 
+// Cache template content in the production environment
+let cachedTemplate: string | null = null;
+
+// Clear the template cache
+export function clearTemplateCache() {
+  cachedTemplate = null;
+}
+
 async function reactSsrMiddleware(req: Request, res: Response, next: NextFunction) {
   // if API request, skip SSR
   if (req.url.startsWith('/api')) {
@@ -20,7 +28,11 @@ async function reactSsrMiddleware(req: Request, res: Response, next: NextFunctio
       template = await viteDevServer.transformIndexHtml(url, template);
       render = (await viteDevServer.ssrLoadModule('@/renderer/entry-server.tsx')).render;
     } else {
-      template = await readFile('./dist/client/index.html', 'utf-8');
+      // Use cached template content in the production environment
+      if (!cachedTemplate) {
+        cachedTemplate = await readFile('./dist/client/index.html', 'utf-8');
+      }
+      template = cachedTemplate;
       render = (await import('@/renderer/entry-server')).render;
     }
     
