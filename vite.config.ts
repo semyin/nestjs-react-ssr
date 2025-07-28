@@ -3,11 +3,12 @@ import { vavite } from "vavite";
 import { swc } from "rollup-plugin-swc3";
 import react from '@vitejs/plugin-react';
 import devtoolsJson from 'vite-plugin-devtools-json';
+import { resolve } from "node:path";
 
 export default defineConfig({
 	resolve: {
 		alias: {
-			'@': __dirname,
+			'@': resolve(__dirname, 'src'),
 		},
 	},
 	buildSteps: [

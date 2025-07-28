@@ -18,10 +18,10 @@ async function reactSsrMiddleware(req: Request, res: Response, next: NextFunctio
     if (viteDevServer) {
       template = await readFile('./index.html', 'utf-8');
       template = await viteDevServer.transformIndexHtml(url, template);
-      render = (await viteDevServer.ssrLoadModule('./entry-server.tsx')).render;
+      render = (await viteDevServer.ssrLoadModule('@/renderer/entry-server.tsx')).render;
     } else {
       template = await readFile('./dist/client/index.html', 'utf-8');
-      render = (await import('../../entry-server')).render;
+      render = (await import('@/renderer/entry-server')).render;
     }
     
     const rendered = await render(url);
