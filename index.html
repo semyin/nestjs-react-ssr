@@ -6,9 +6,25 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Vite + React + TS</title>
     <!--app-head-->
+    <style>
+      /* fix FOUC (Flash of Unstyled Content) */
+      body {
+        opacity: 0;
+        transition: opacity 0.1s ease-out;
+      }
+      body.hydrated {
+        opacity: 1;
+      }
+    </style>
   </head>
   <body>
     <div id="root"><!--app-html--></div>
     <script type="module" src="/entry-client.tsx"></script>
+    <script>
+      // add hydration class to body
+      document.addEventListener('DOMContentLoaded', function() {
+        document.body.classList.add('hydrated');
+      });
+    </script>
   </body>
 </html>

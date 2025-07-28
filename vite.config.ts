@@ -1,7 +1,8 @@
 import { defineConfig } from "vite";
 import { vavite } from "vavite";
 import { swc } from "rollup-plugin-swc3";
-import react from '@vitejs/plugin-react'
+import react from '@vitejs/plugin-react';
+import devtoolsJson from 'vite-plugin-devtools-json';
 
 export default defineConfig({
 	resolve: {
@@ -36,6 +37,7 @@ export default defineConfig({
 	esbuild: false,
 	plugins: [
 		react(),
+		devtoolsJson(),
 		{
 			...swc({
 				jsc: {

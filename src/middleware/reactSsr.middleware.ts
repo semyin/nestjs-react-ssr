@@ -14,21 +14,32 @@ async function reactSsrMiddleware(req: Request, res: Response, next: NextFunctio
   let template: string;
   let render;
   
-  if (viteDevServer) {
-    template = await readFile('./index.html', 'utf-8');
-    template = await viteDevServer.transformIndexHtml(url, template);
-    render = (await viteDevServer.ssrLoadModule('./entry-server.tsx')).render;
-  } else {
-    template = await readFile('./dist/client/index.html', 'utf-8');
-    render = (await import('../../entry-server')).render;
+  try {
+    if (viteDevServer) {
+      template = await readFile('./index.html', 'utf-8');
+      template = await viteDevServer.transformIndexHtml(url, template);
+      render = (await viteDevServer.ssrLoadModule('./entry-server.tsx')).render;
+    } else {
+      template = await readFile('./dist/client/index.html', 'utf-8');
+      render = (await import('../../entry-server')).render;
+    }
+    
+    const rendered = await render(url);
+    
+    // add performance optimization response headers
+    res.setHeader('Content-Type', 'text/html; charset=utf-8');
+    res.setHeader('Cache-Control', 'no-cache');
+    
+    html = template
+      .replace(`<!--app-head-->`, rendered.head ?? '')
+      .replace(`<!--app-html-->`, rendered.html ?? '');
+   
+    res.status(200).send(html);
+  } catch (error) {
+    console.error('SSR Error:', error);
+    // return basic HTML when error
+    res.status(500).send('<!DOCTYPE html><html><head><title>Error</title></head><body><h1>Server Error</h1></body></html>');
   }
-  
-  const rendered = await render(url);
-  html = template
-    .replace(`<!--app-head-->`, rendered.head ?? '')
-    .replace(`<!--app-html-->`, rendered.html ?? '');
- 
-  res.send(html);
 }
 
 export { reactSsrMiddleware };
