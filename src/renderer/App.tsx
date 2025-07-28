@@ -1,22 +1,12 @@
 import React, { useState } from 'react';
 import { Routes, Route, Link } from 'react-router';
+import { Home } from '@/pages/Home';
+import { About } from '@/pages/About';
 import '@/assets/css/reset.css';
 import '@/assets/css/App.css'
 import reactLogo from '@/assets/react.svg';
 import nestLogo from '@/assets/nestjs.svg';
 import reactRouterLogo from '@/assets/react-router.svg';
-
-function Home() {
-  return (
-   <h1>Home</h1>
-  );
-}
-
-function About() {
-  return (
-    <h1>About</h1>
-  );
-}
 
 const App: React.FC = () => {
 
