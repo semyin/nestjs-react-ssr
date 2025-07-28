@@ -9,4 +9,18 @@ export class AppController {
 			msg: 'hello world'
 		}
 	}
+
+	@Get("/api/home")
+	async home() {
+		return {
+			msg: 'this is home page data from backend'
+		}
+	}
+
+	@Get("/api/about")
+	async about() {
+		return {
+			msg: 'Another page about data from backend'
+		}
+	}
 }
