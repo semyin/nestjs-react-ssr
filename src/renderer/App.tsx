@@ -1,17 +1,14 @@
 import React, { useState } from 'react';
-import { Link, useRoutes } from 'react-router';
+import { Link, Outlet } from 'react-router';
 import '@/assets/css/reset.css';
 import '@/assets/css/App.css'
 import reactLogo from '@/assets/react.svg';
 import nestLogo from '@/assets/nestjs.svg';
 import reactRouterLogo from '@/assets/react-router.svg';
-import { routes } from './routes';
 
 const App: React.FC = () => {
 
   const [count, setCount] = useState(0)
-
-  const element = useRoutes(routes);
 
   return (
     <div>
@@ -46,7 +43,7 @@ const App: React.FC = () => {
         <span> </span>
         <Link to="/about">About</Link>
       </nav>
-      {element}
+      <Outlet />
     </div>
   );
 };

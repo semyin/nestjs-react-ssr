@@ -1,28 +1,36 @@
-import { Home } from '@/pages/Home';
-import { About } from '@/pages/About';
 import { RouteObject } from 'react-router';
-import { DefaultLayout } from '@/layouts/Default';
+import { QueryClient } from '@tanstack/react-query';
+import App from './App';
+import { Home, homeQueryKey, fetchHome } from '@/pages/Home';
+import { About, aboutQueryKey, fetchAbout } from '@/pages/About';
 
-const routes: RouteObject[] = [
+const createRoutes = (queryClient: QueryClient): RouteObject[] => [
   {
     path: '/',
-    element: <DefaultLayout />,
+    element: <App />,
     children: [
       {
         path: '',
         element: <Home />,
         loader: async () => {
-          return {
-            title: 'Home',
-          }
+          return queryClient.prefetchQuery({
+            queryKey: homeQueryKey,
+            queryFn: fetchHome,
+          });
         }
       },
       {
         path: '/about',
         element: <About />,
+        loader: async () => {
+          return queryClient.prefetchQuery({
+            queryKey: aboutQueryKey,
+            queryFn: fetchAbout,
+          });
+        }
       }
     ],
   },
 ]
 
-export { routes };
+export { createRoutes };

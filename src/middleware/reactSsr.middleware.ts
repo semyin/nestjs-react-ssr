@@ -1,4 +1,5 @@
-import { Request, Response, NextFunction } from 'express';
+import type { Request, Response, NextFunction } from 'express';
+import express from 'express';
 import { readFile } from 'fs/promises';
 import viteDevServer from 'vavite/vite-dev-server';
 
@@ -36,7 +37,12 @@ async function reactSsrMiddleware(req: Request, res: Response, next: NextFunctio
       render = (await import('@/renderer/entry-server')).render;
     }
     
-    const rendered = await render(url);
+    const rendered = await render({
+      originalUrl: req.originalUrl,
+      headers: req.headers as Record<string, string>,
+    });
+
+    const dehydratedStateScript = `<script>window.__REACT_QUERY_STATE__ = ${JSON.stringify(rendered.dehydratedState).replace(/</g, '\\u003c')}</script>`;
     
     // add performance optimization response headers
     res.setHeader('Content-Type', 'text/html; charset=utf-8');
@@ -44,10 +50,17 @@ async function reactSsrMiddleware(req: Request, res: Response, next: NextFunctio
     
     html = template
       .replace(`<!--app-head-->`, rendered.head ?? '')
-      .replace(`<!--app-html-->`, rendered.html ?? '');
+      .replace(`<!--app-html-->`, rendered.html ?? '')
+      .replace(`<!--app-data-->`, dehydratedStateScript);
    
     res.status(200).send(html);
   } catch (error) {
+
+    if (error instanceof Response) {
+      // If a Response is thrown in the loader, redirect to the specified location.
+      return res.redirect(error.status, error.headers.get('Location') || '/');
+    }
+
     console.error('SSR Error:', error);
     // return basic HTML when error
     res.status(500).send('<!DOCTYPE html><html><head><title>Error</title></head><body><h1>Server Error</h1></body></html>');

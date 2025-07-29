@@ -1,7 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import { BrowserRouter } from 'react-router';
-import App from '@/renderer/App';
+import { createBrowserRouter, RouterProvider } from 'react-router';
+import { hydrate, HydrationBoundary, QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { createRoutes } from './routes';
 
 // fix hydration style flicker
 if (typeof window !== 'undefined') {
@@ -23,11 +24,31 @@ if (typeof window !== 'undefined') {
   }
 }
 
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      // The staleTime here should match the server-side or be adjusted according to your strategy.
+      staleTime: 10 * 1000,
+      refetchOnWindowFocus: false,
+      refetchOnMount: false,
+    },
+  },
+});
+
+const dehydratedState = (window as any).__REACT_QUERY_STATE__;
+
+hydrate(queryClient, dehydratedState);
+
+const routes = createRoutes(queryClient);
+const router = createBrowserRouter(routes);
+
 ReactDOM.hydrateRoot(
   document.getElementById('root')!,
   <React.StrictMode>
-    <BrowserRouter>
-      <App />
-    </BrowserRouter>
+    <QueryClientProvider client={queryClient}>
+      <HydrationBoundary state={dehydratedState}>
+        <RouterProvider router={router} />
+      </HydrationBoundary>
+    </QueryClientProvider>
   </React.StrictMode>
 );
