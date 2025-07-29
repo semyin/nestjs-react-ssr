@@ -13,7 +13,7 @@ export class AppController {
 	@Get("/api/home")
 	async home() {
 		return {
-			msg: 'this is home page data from backend'
+			msg: 'This is home page data from backend'
 		}
 	}
 
