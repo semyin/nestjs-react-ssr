@@ -5,7 +5,7 @@ A server-side rendering (SSR) project template based on NestJS and React, using 
 ## Tech Stack
 
 - **Backend**: [NestJS](https://nestjs.com/) (based on Express)
-- **Frontend**: [React 18](https://reactjs.org/) (with SSR support)
+- **Frontend**: [React 19](https://reactjs.org/) (with SSR support)
 - **Routing**: [React Router v7](https://reactrouter.com/)
 - **Build Tool**: [Vite](https://vitejs.dev/) + [vavite](https://github.com/cyco130/vavite)
 
@@ -58,25 +58,26 @@ src/
 ├── middleware/
 │   └── reactSsr.middleware.ts  # React SSR middleware
 ├── pages/                  # Page components
-│   └── Contact.tsx
+│   ├── About.tsx
+│   ├── Detail.tsx
+│   └── Home.tsx
+│
+├── hooks/                  # Custom React hooks
+│
+├── layouts/                # Page layout components
+│   └── Default.tsx
+│
+├── renderer/               # React rendering related code
+│   ├── App.tsx             # React root component
+│   ├── entry-client.tsx    # Client entry
+│   ├── entry-server.tsx    # Server-side rendering entry
+│   └── routes.tsx          # Application routes
 │
 ├── assets/                 # Static assets
 │   ├── css/
-│   │   ├── App.css
-│   │   └── reset.css
 │   ├── nestjs.svg
 │   ├── react-router.svg
 │   └── react.svg
-│
-├── public/                 # Public static files
-│   └── vite.svg
-│
-├── App.tsx                 # React root component
-├── entry-client.tsx        # Client entry
-├── entry-server.tsx        # Server-side rendering entry
-├── index.html              # HTML template
-├── vite.config.ts          # Vite configuration
-└── package.json            # Project configuration
 ```
 
 ## How It Works
