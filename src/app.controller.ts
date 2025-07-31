@@ -1,4 +1,4 @@
-import { Controller, Get, Req, Request } from "@nestjs/common";
+import { Controller, Get, Param, Req, Request } from "@nestjs/common";
 
 @Controller()
 export class AppController {
@@ -21,6 +21,13 @@ export class AppController {
 	async about() {
 		return {
 			msg: 'Another page about data from backend'
+		}
+	}
+
+	@Get("/api/detail/:id")
+	async detail(@Param("id") id: string) {
+		return {
+			msg: 'Another page id = ' + id + ' detail data from backend'
 		}
 	}
 }

@@ -1,8 +1,9 @@
-export { Home, homeQueryKey, fetchHome };
+export { Page, loader };
 
-import { useQuery } from "@tanstack/react-query";
+import { QueryClient, useQuery } from "@tanstack/react-query";
+import { LoaderFunction } from "react-router";
 
-function Home() {
+function Page() {
   const { data, isLoading, isError, error } = useQuery({
     queryKey: homeQueryKey,
     queryFn: fetchHome,
@@ -25,4 +26,11 @@ const homeQueryKey = ['home'];
 const fetchHome = async () => {
   const res = await fetch('http://localhost:5173/api/home');
   return res.json();
+}
+
+const loader  = (queryClient: QueryClient): LoaderFunction => async () => {
+  return queryClient.prefetchQuery({
+    queryKey: homeQueryKey,
+    queryFn: fetchHome,
+  });
 }

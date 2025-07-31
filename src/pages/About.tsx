@@ -1,8 +1,9 @@
-export { About, aboutQueryKey, fetchAbout };
+export { Page, loader };
 
-import { useQuery } from "@tanstack/react-query";
+import { QueryClient, useQuery } from "@tanstack/react-query";
+import { LoaderFunction } from "react-router";
 
-function About() {
+function Page() {
 
   const { data, isLoading, isError, error } = useQuery({
     queryKey: aboutQueryKey,
@@ -26,4 +27,11 @@ const aboutQueryKey = ['about'];
 const fetchAbout = async () => {
   const res = await fetch('http://localhost:5173/api/about');
   return res.json();
+}
+
+const loader = (queryClient: QueryClient): LoaderFunction => async () => {
+  return queryClient.prefetchQuery({
+    queryKey: aboutQueryKey,
+    queryFn: fetchAbout,
+  });
 }
