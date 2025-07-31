@@ -2,9 +2,13 @@ import React from 'react';
 import { StaticRouterProvider, createStaticHandler, createStaticRouter } from 'react-router';
 import { renderToString } from "react-dom/server";
 import { dehydrate, QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { HelmetProvider } from '@dr.pogodin/react-helmet';
 import { createRoutes } from './routes';
 
 export async function render(req: { originalUrl: string, headers: Record<string, string> }) {
+
+  // 0. create HelmetProvider
+  const helmetContext: { helmet?: any } = {};
 
   // 1. create QueryClient
   const queryClient = new QueryClient({ 
@@ -44,9 +48,11 @@ export async function render(req: { originalUrl: string, headers: Record<string,
 
   const html = renderToString(
     <React.StrictMode>
-      <QueryClientProvider client={queryClient}>
-        <StaticRouterProvider router={router} context={context} />
-      </QueryClientProvider>
+      <HelmetProvider context={helmetContext}>
+        <QueryClientProvider client={queryClient}>
+          <StaticRouterProvider router={router} context={context} />
+        </QueryClientProvider>
+      </HelmetProvider>
     </React.StrictMode>
   );
 
@@ -56,5 +62,15 @@ export async function render(req: { originalUrl: string, headers: Record<string,
   // 9. clear queryClient
   queryClient.clear();
 
-  return { html, dehydratedState }
+  const { helmet } = helmetContext;
+  const head = helmet
+    ? `
+      ${helmet.title.toString()}
+      ${helmet.meta.toString()}
+      ${helmet.link.toString()}
+      ${helmet.script.toString()}
+    `
+    : '';
+
+  return { html, head, dehydratedState }
 }

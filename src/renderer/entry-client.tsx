@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { createBrowserRouter, RouterProvider } from 'react-router';
 import { hydrate, HydrationBoundary, QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { HelmetProvider } from '@dr.pogodin/react-helmet';
 import { createRoutes } from './routes';
 
 // fix hydration style flicker
@@ -45,10 +46,12 @@ const router = createBrowserRouter(routes);
 ReactDOM.hydrateRoot(
   document.getElementById('root')!,
   <React.StrictMode>
-    <QueryClientProvider client={queryClient}>
-      <HydrationBoundary state={dehydratedState}>
-        <RouterProvider router={router} />
-      </HydrationBoundary>
-    </QueryClientProvider>
+    <HelmetProvider>
+      <QueryClientProvider client={queryClient}>
+        <HydrationBoundary state={dehydratedState}>
+          <RouterProvider router={router} />
+        </HydrationBoundary>
+      </QueryClientProvider>
+    </HelmetProvider>
   </React.StrictMode>
 );

@@ -1,5 +1,6 @@
 import { QueryClient } from "@tanstack/react-query";
 import { LoaderFunction, useLoaderData } from "react-router";
+import { Helmet } from '@dr.pogodin/react-helmet'; 
 
 export { Page, loader };
 
@@ -25,10 +26,23 @@ function Page() {
   // if (isError) return <div>Error: {(error as Error).message}</div>;
 
   return (
-    <div>
-      <h1>detail</h1>
-      <p>{initialData.msg}</p>
-    </div>
+    <>
+    <Helmet>
+        <title>{initialData.msg}</title>
+        <meta name="description" content={initialData.msg} />
+        
+        {/* Open Graph a/ Twitter Card data */}
+        <meta property="og:title" content={initialData.msg} />
+        <meta property="og:description" content={initialData.msg} />
+        <meta property="og:type" content="article" />
+        <meta property="og:url" content={initialData.msg} />
+      </Helmet>
+      <div>
+        <h1>detail</h1>
+        <p>{initialData.msg}</p>
+      </div>
+    </>
+    
   );
 }
 
