@@ -7,6 +7,9 @@ import { NestExpressApplication } from '@nestjs/platform-express';
 import { join } from 'path';
 import { fileURLToPath } from 'url';
 import { dirname } from 'path';
+import * as dotenv from 'dotenv';
+
+dotenv.config();
 
 // Alternative to getting __dirname in ES Modules
 const __filename = fileURLToPath(import.meta.url);
