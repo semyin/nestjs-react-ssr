@@ -6,7 +6,7 @@ import { LoaderFunction } from "react-router";
 
 function Page() {
 
-  const { title } = useAppContext();
+  const { state, dispatch } = useAppContext();
 
   const { data, isLoading, isError, error } = useQuery({
     queryKey: homeQueryKey,
@@ -20,7 +20,7 @@ function Page() {
   return (
     <div>
       <h1>Home Page</h1>
-      <p>{title}</p>
+      <p>{state.title} <button onClick={() => dispatch({ type: 'SET_TITLE', payload: 'New Title updated at:' + new Date().getTime() })}>Set Title</button> </p>
       <p>{JSON.stringify(data)}</p>
     </div>
   );
