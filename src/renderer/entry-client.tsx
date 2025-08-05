@@ -3,8 +3,9 @@ import ReactDOM from 'react-dom/client';
 import { createBrowserRouter, RouterProvider } from 'react-router';
 import { hydrate, HydrationBoundary, QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { HelmetProvider } from '@dr.pogodin/react-helmet';
-import { AppProvider, IGlobalState } from './AppContext';
+import { AppProvider } from './AppContext';
 import { createRoutes } from './routes';
+import { createInitialState, StoreProvider } from '@/store';
 
 // fix hydration style flicker
 if (typeof window !== 'undefined') {
@@ -38,7 +39,10 @@ const queryClient = new QueryClient({
 });
 
 const dehydratedState = (window as any).__REACT_QUERY_STATE__;
+
 const initialState = (window as any).__INITIAL_STATE__;
+
+const initialValtioState = (window as any).__INITIAL_VALTIO_STATE__ || createInitialState({});
 
 hydrate(queryClient, dehydratedState);
 
@@ -49,13 +53,15 @@ ReactDOM.hydrateRoot(
   document.getElementById('root')!,
   <React.StrictMode>
     <AppProvider initialState={initialState}>
-      <HelmetProvider>
-        <QueryClientProvider client={queryClient}>
-          <HydrationBoundary state={dehydratedState}>
-            <RouterProvider router={router} />
-          </HydrationBoundary>
-        </QueryClientProvider>
-      </HelmetProvider>
+      <StoreProvider initialState={initialValtioState}>
+        <HelmetProvider>
+          <QueryClientProvider client={queryClient}>
+            <HydrationBoundary state={dehydratedState}>
+              <RouterProvider router={router} />
+            </HydrationBoundary>
+          </QueryClientProvider>
+        </HelmetProvider>
+      </StoreProvider>
     </AppProvider>
   </React.StrictMode>
 );
@@ -65,3 +71,6 @@ delete (window as any).__REACT_QUERY_STATE__;
 
 // delete __INITIAL_STATE__ from window to avoid memory leak
 delete (window as any).__INITIAL_STATE__;
+
+// delete __INITIAL_VALTIO_STATE__ from window to avoid memory leak
+delete (window as any).__INITIAL_VALTIO_STATE__;

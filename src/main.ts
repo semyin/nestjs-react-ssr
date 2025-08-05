@@ -33,7 +33,7 @@ async function bootstrap() {
   if (import.meta.env.PROD) {
     app.use('/.well-known/appspecific/com.chrome.devtools.json', (req: IncomingMessage, res: ServerResponse) => {
       res.setHeader('Content-Type', 'application/json');
-      res.end({});
+      res.end('{}');
     });
   }
   

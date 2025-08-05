@@ -1,32 +1,28 @@
-// file: src/renderer/context/AppContext.tsx
-
 import React, { createContext, useContext, PropsWithChildren, useReducer, Dispatch } from 'react';
 
 // 1. Define the State and Action Types
 export interface IGlobalState {
-  title: string;
+  context: string;
   user: {
     isLoggedIn: boolean;
     name: string | null;
   } | null;
-  theme: 'light' | 'dark';
 }
 
 // Define the actions that can modify the state
 export type Action =
-  | { type: 'SET_TITLE'; payload: string }
+  | { type: 'SET_CONTEXT'; payload: string }
   | { type: 'LOGIN'; payload: { name: string } }
   | { type: 'LOGOUT' }
-  | { type: 'SET_THEME'; payload: 'light' | 'dark' };
 
 // 2. Define the Reducer Function
 // This function determines how the state changes in response to actions
 function appReducer(state: IGlobalState, action: Action): IGlobalState {
   switch (action.type) {
-    case 'SET_TITLE':
+    case 'SET_CONTEXT':
       return {
         ...state,
-        title: action.payload,
+        context: action.payload,
       };
     case 'LOGIN':
       return {
@@ -40,11 +36,6 @@ function appReducer(state: IGlobalState, action: Action): IGlobalState {
       return {
         ...state,
         user: null,
-      };
-    case 'SET_THEME':
-      return {
-        ...state,
-        theme: action.payload,
       };
     default:
       // This is a safeguard for unhandled actions

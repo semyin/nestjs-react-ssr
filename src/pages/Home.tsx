@@ -1,12 +1,27 @@
 export { Page, loader };
 
+import { StoreContext, useStore } from "@/store";
 import { useAppContext } from "@/renderer/AppContext";
 import { QueryClient, useQuery } from "@tanstack/react-query";
+import React from "react";
 import { LoaderFunction } from "react-router";
 
 function Page() {
 
   const { state, dispatch } = useAppContext();
+
+  const store = React.useContext(StoreContext);
+  const snap = useStore();
+
+  const updateTitle = () => {
+    if (store) {
+      store.title = 'new title updated at:' + new Date().getTime();
+    }
+  }
+
+  const updateContext = () => {
+    dispatch({ type: 'SET_CONTEXT', payload: 'new context updated at:' + new Date().getTime() })
+  }
 
   const { data, isLoading, isError, error } = useQuery({
     queryKey: homeQueryKey,
@@ -20,7 +35,12 @@ function Page() {
   return (
     <div>
       <h1>Home Page</h1>
-      <p>{state.title} <button onClick={() => dispatch({ type: 'SET_TITLE', payload: 'New Title updated at:' + new Date().getTime() })}>Set Title</button> </p>
+      <p>=====valtio state=====</p>
+      <p>{snap.theme}</p>
+      <p>{snap.title} <button onClick={updateTitle}>Set Title</button> </p>
+      <p>=====app context state=====</p>
+      <p>{state.context} <button onClick={updateContext}>Set Context</button></p>
+      <p>=====query state=====</p>
       <p>{JSON.stringify(data)}</p>
     </div>
   );
