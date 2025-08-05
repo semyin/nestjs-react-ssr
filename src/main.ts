@@ -27,6 +27,16 @@ async function bootstrap() {
 
 	// Set vite.svg as static file
   app.use('/vite.svg', express.static(join(__dirname, '..', 'client/vite.svg')));
+  app.use('/favicon.ico', express.static(join(__dirname, '..', 'client/vite.svg')));
+
+  // Set .well-known/appspecific/com.chrome.devtools.json as empty json
+  if (import.meta.env.PROD) {
+    app.use('/.well-known/appspecific/com.chrome.devtools.json', (req: IncomingMessage, res: ServerResponse) => {
+      res.setHeader('Content-Type', 'application/json');
+      res.end({});
+    });
+  }
+  
 
 	await app.init();
 

@@ -43,6 +43,7 @@ async function reactSsrMiddleware(req: Request, res: Response, next: NextFunctio
     });
 
     const dehydratedStateScript = `<script>window.__REACT_QUERY_STATE__ = ${JSON.stringify(rendered.dehydratedState).replace(/</g, '\\u003c')}</script>`;
+    const initialStateScript = `<script>window.__INITIAL_STATE__ = ${JSON.stringify(rendered.globalInitialState).replace(/</g, '\\u003c')}</script>`;
     
     // add performance optimization response headers
     res.setHeader('Content-Type', 'text/html; charset=utf-8');
@@ -51,6 +52,7 @@ async function reactSsrMiddleware(req: Request, res: Response, next: NextFunctio
     html = template
       .replace(`<!--app-head-->`, rendered.head ?? '')
       .replace(`<!--app-html-->`, rendered.html ?? '')
+      .replace(`<!--app-initial-state-->`, initialStateScript)
       .replace(`<!--app-data-->`, dehydratedStateScript);
    
     res.status(200).end(html);

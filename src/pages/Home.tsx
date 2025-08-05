@@ -1,9 +1,13 @@
 export { Page, loader };
 
+import { useAppContext } from "@/renderer/AppContext";
 import { QueryClient, useQuery } from "@tanstack/react-query";
 import { LoaderFunction } from "react-router";
 
 function Page() {
+
+  const { title } = useAppContext();
+
   const { data, isLoading, isError, error } = useQuery({
     queryKey: homeQueryKey,
     queryFn: fetchHome,
@@ -16,6 +20,7 @@ function Page() {
   return (
     <div>
       <h1>Home Page</h1>
+      <p>{title}</p>
       <p>{JSON.stringify(data)}</p>
     </div>
   );

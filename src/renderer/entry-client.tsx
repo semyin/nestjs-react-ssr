@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom/client';
 import { createBrowserRouter, RouterProvider } from 'react-router';
 import { hydrate, HydrationBoundary, QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { HelmetProvider } from '@dr.pogodin/react-helmet';
+import { AppProvider, IGlobalState } from './AppContext';
 import { createRoutes } from './routes';
 
 // fix hydration style flicker
@@ -37,6 +38,7 @@ const queryClient = new QueryClient({
 });
 
 const dehydratedState = (window as any).__REACT_QUERY_STATE__;
+const initialState = (window as any).__INITIAL_STATE__;
 
 hydrate(queryClient, dehydratedState);
 
@@ -46,15 +48,20 @@ const router = createBrowserRouter(routes);
 ReactDOM.hydrateRoot(
   document.getElementById('root')!,
   <React.StrictMode>
-    <HelmetProvider>
-      <QueryClientProvider client={queryClient}>
-        <HydrationBoundary state={dehydratedState}>
-          <RouterProvider router={router} />
-        </HydrationBoundary>
-      </QueryClientProvider>
-    </HelmetProvider>
+    <AppProvider initialState={initialState}>
+      <HelmetProvider>
+        <QueryClientProvider client={queryClient}>
+          <HydrationBoundary state={dehydratedState}>
+            <RouterProvider router={router} />
+          </HydrationBoundary>
+        </QueryClientProvider>
+      </HelmetProvider>
+    </AppProvider>
   </React.StrictMode>
 );
 
 // delete __REACT_QUERY_STATE__ from window to avoid memory leak
 delete (window as any).__REACT_QUERY_STATE__;
+
+// delete __INITIAL_STATE__ from window to avoid memory leak
+delete (window as any).__INITIAL_STATE__;
