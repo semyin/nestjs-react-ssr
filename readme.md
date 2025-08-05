@@ -8,10 +8,14 @@ A server-side rendering (SSR) project template based on NestJS and React, using 
 - **Frontend**: [React 19](https://reactjs.org/) (with SSR support)
 - **Routing**: [React Router v7](https://reactrouter.com/)
 - **Build Tool**: [Vite](https://vitejs.dev/) + [vavite](https://github.com/cyco130/vavite)
+- **State Management**: [Valtio](https://valtio.dev/)
+- **Data Fetching**: [React Query](https://react-query.tanstack.com/)
 
 ## Project Features
 
 - ✅ Server-side rendering (SSR) for improved initial load speed and SEO
+- ✅ state management with Valtio
+- ✅ data fetching with React Query
 - ✅ NestJS backend architecture with good modularity and dependency injection support
 - ✅ Client-side routing with React Router
 - ✅ Integrated Vite development environment with hot reloading
@@ -68,10 +72,15 @@ src/
 │   └── Default.tsx
 │
 ├── renderer/               # React rendering related code
+│   ├── AppContext.tsx      # React context for global state
 │   ├── App.tsx             # React root component
 │   ├── entry-client.tsx    # Client entry
 │   ├── entry-server.tsx    # Server-side rendering entry
 │   └── routes.tsx          # Application routes
+│
+├── store/                  # State management code
+│   ├── index.ts            # Valtio state definition
+│   └── StoreProvider.tsx   # Store provider component
 │
 ├── assets/                 # Static assets
 │   ├── css/
