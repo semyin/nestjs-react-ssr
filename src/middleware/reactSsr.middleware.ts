@@ -46,14 +46,14 @@ async function reactSsrMiddleware(req: Request, res: Response, next: NextFunctio
     
     // add performance optimization response headers
     res.setHeader('Content-Type', 'text/html; charset=utf-8');
-    res.setHeader('Cache-Control', 'no-cache');
+    res.setHeader('Cache-Control', 'private, no-cache, no-store, must-revalidate');
     
     html = template
       .replace(`<!--app-head-->`, rendered.head ?? '')
       .replace(`<!--app-html-->`, rendered.html ?? '')
       .replace(`<!--app-data-->`, dehydratedStateScript);
    
-    res.status(200).send(html);
+    res.status(200).end(html);
   } catch (error) {
 
     if (error instanceof Response) {
