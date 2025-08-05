@@ -55,3 +55,6 @@ ReactDOM.hydrateRoot(
     </HelmetProvider>
   </React.StrictMode>
 );
+
+// delete __REACT_QUERY_STATE__ from window to avoid memory leak
+delete (window as any).__REACT_QUERY_STATE__;
