@@ -65,6 +65,31 @@ export default defineConfig(({ mode }) => {
         handlerEntry: "/src/main.ts",
         serveClientAssetsInDev: true,
       }),
+      {
+        name: "warmup",
+        configureServer(server) {
+          server.httpServer?.once("listening", () => {
+            console.log("\n ✅ Vite dev server started\n");
+            // 在此执行预热逻辑
+            if (mode === "development") {
+              const apiPrefix = env.VITE_API_PREFIX;
+              const baseURL = `http://${host}:${port}`;
+              const warmupURL = `${baseURL}${apiPrefix}/status`;
+              fetch(warmupURL)
+                .then(res => {
+                  if (res.ok) {
+                    console.log("\n✅ Vite dev server warmup request success！\n");
+                  } else {
+                    console.error("\n⚠️ Warmup interface returns non-200 status:", res.status + "\n");
+                  }
+                })
+                .catch(err => {
+                  console.error("\n❌ Warmup request failed:", err.message + "\n");
+                });
+            }
+          });
+        }
+      },
     ],
   }
 });

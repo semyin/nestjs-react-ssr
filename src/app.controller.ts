@@ -1,7 +1,15 @@
-import { Controller, Get, Param, Req, Request } from "@nestjs/common";
+import { Controller, Get, Param } from "@nestjs/common";
 
 @Controller()
 export class AppController {
+
+  @Get("/api/status")
+  async status() {
+    return {
+      msg: 'status ok',
+      time: new Date().getTime()
+    }
+  }
 
 	@Get("/api/hello")
 	async hello() {
